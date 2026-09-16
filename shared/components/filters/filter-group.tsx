@@ -43,43 +43,57 @@ export const filtersData: Filter[] = [
     id: "processor",
     icon: <Cpu />,
     title: "Processor",
-    defaultValue: "Gen2",
+    defaultValue: "M2",
     items: [
-      { label: "Galaxy Core Gen1", value: "Gen1" },
-      { label: "Galaxy Core Gen2", value: "Gen2" },
-      { label: "Galaxy Core Gen3", value: "Gen3" },
-      { label: "Galaxy Core Gen4", value: "Gen4" },
+      { label: "Galaxy M1", value: "M1" },
+      { label: "Galaxy M2", value: "M2" },
+      { label: "Galaxy M3", value: "M3" },
+      { label: "Galaxy M4", value: "M4" },
     ],
   },
 ];
 
 export const FilterGroup = () => {
   return (
-    <div className="flex flex-col gap-5">
-      {filtersData.map((filter) => (
-        <div key={filter.id} className="flex flex-col gap-2.5">
-          <div className="flex gap-2">
-            {filter.icon}
-            <p className="text-base font-semibold">{filter.title}</p>
-          </div>
+    <div className="flex flex-col gap-6">
+  {filtersData.map((filter) => (
+    <div key={filter.id} className="flex flex-col gap-3 mt-3.5">
+      
+      <div className="flex items-center pl-7 font-bold gap-2">
+        {filter.icon}
+        <p className="text-base font-semibold">{filter.title}</p>
+      </div>
 
-          <div className="flex flex-col gap-1">
-            {filter.items.map((item) => (
-              <label key={item.value}>
-                <div className="flex gap-2">
-                  <input
-                    type="radio"
-                    name={filter.id}
-                    value={item.value}
-                    defaultChecked={item.value === filter.defaultValue}
-                  />
-                  {item.label}
-                </div>
-              </label>
-            ))}
-          </div>
-        </div>
-      ))}
+      <div className="flex justify-center flex-wrap gap-2">
+        {filter.items.map((item) => (
+          <label
+            key={item.value}
+            className="
+              flex h-12 min-w-27 cursor-pointer
+              items-center justify-center
+              rounded-xl border border-[#E5E7EB] px-5
+              text-sm font-medium shadow-sm
+              transition-all duration-200
+              hover:border-gray-400 hover:bg-gray-50
+              has-checked:border-[#1E2230]
+              has-checked:bg-[#1E2230]
+              has-checked:text-white
+            "
+          >
+            <input
+              type="radio"
+              name={filter.id}
+              value={item.value}
+              defaultChecked={item.value === filter.defaultValue}
+              className="sr-only"
+            />
+
+            <p className="font-semibold">{item.label}</p>
+          </label>
+        ))}
+      </div>
     </div>
+  ))}
+</div>
   );
 };
