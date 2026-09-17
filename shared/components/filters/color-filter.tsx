@@ -1,10 +1,9 @@
 import { Palette } from "lucide-react";
-import { ReactNode } from "react";
+import { LaptopColor } from "../../hero";
 
-interface ColorItem {
-  value: string;
-  color: string;
-  icon: ReactNode;
+interface Props {
+  selectedColor: LaptopColor;
+  onColorChange: (color: LaptopColor) => void;
 }
 
 export const filtersData = [
@@ -17,13 +16,12 @@ export const filtersData = [
       { value: "black", color: "#111827" },
       { value: "silver", color: "#CBD5E1" },
       { value: "blue", color: "#3B82F6" },
-      { value: "purple", color: "#A855F7" },
       { value: "gold", color: "#E8C39E" },
     ],
   },
 ];
 
-export const ColorFilter = ({}) => {
+export const ColorFilter = ({ selectedColor, onColorChange }: Props) => {
   return (
     <div className="flex flex-col gap-6">
       {filtersData.map((filter) => (
@@ -49,7 +47,8 @@ export const ColorFilter = ({}) => {
                   type="radio"
                   name={filter.id}
                   value={item.value}
-                  defaultChecked={item.value === filter.defaultValue}
+                  checked={item.value === selectedColor}
+                  onChange={() => onColorChange(item.value as LaptopColor)}
                   className="sr-only"
                 />
                 <div
