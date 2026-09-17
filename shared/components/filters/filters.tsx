@@ -9,12 +9,12 @@ interface Props {
 
 export const Filters = ({ selectedColor, onColorChange }: Props) => {
   return (
-    <section className="bg-[#FAFBFD] border-[#1B2233] rounded-3xl max-w-80 shadow-xl">
-      <div className="grid justify-center pt-4 mb-4">
-        <p className="text-[18px] font-bold text-[#1F2937] font-bold">
+    <section className="">
+      <div className="grid pt-7 mb-7 ">
+        <p className="font-(family-name:--font-poppins) text-3xl font-bold text-[#1F2937]">
           Customize Your Laptop
         </p>
-        <p className="text-[#6B7280] text-[16px]">
+        <p className="text-[#6B7280] text-md">
           Find the perfect specs for your needs.
         </p>
       </div>
@@ -24,7 +24,7 @@ export const Filters = ({ selectedColor, onColorChange }: Props) => {
         onColorChange={onColorChange}
       />
       <div></div>
-      <button className="mt-5 mb-5 w-full rounded-xl bg-[#1E2230] px-6 py-4 font-semibold text-white transition hover:bg-[#2A2F40]">
+      <button className="mt-5 mb-5 w-full rounded-xl bg-[#100E09] px-6 py-4 font-semibold text-white transition hover:bg-[#202020]">
         ADD TO CART
       </button>
     </section>
