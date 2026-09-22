@@ -1,3 +1,5 @@
+"use client";
+
 import { ColorFilter } from "./color-filter";
 import { FilterGroup } from "./filter-group";
 import { LaptopColor } from "../../hero";

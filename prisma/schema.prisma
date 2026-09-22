@@ -6,40 +6,43 @@ datasource db {
   provider = "postgresql"
 }
 
-enum LaptopColor {
-  SILVER
-  BLACK
-  BLUE
-  GOLD
-}
-
 
 model Product {
-  id        Int              @id @default(autoincrement())
+  id        Int      @id @default(autoincrement())
   name      String
-  slug      String           @unique
-  createdAt DateTime         @default(now())
-  updatedAt DateTime         @updatedAt
+  slug      String   @unique
+  basePrice Int
+  imageUrl  String
 
-  variants  ProductVariant[]
+  options   ProductOption[]
+  cartItems CartItem[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 
-model ProductVariant {
-  id          Int         @id @default(autoincrement())
-  ramGb       Int
-  storageGb   Int
-  processor   String
-  color       LaptopColor
-  price       Int
-  imageUrl    String
+model ProductOption {
+  id        Int           @id @default(autoincrement())
+  name      String
+  type      String
+  productId Int
+  product   Product       @relation(fields: [productId], references: [id])
 
-  productId   Int
-  product     Product     @relation(fields: [productId], references: [id])
+  values    ProductOptionValue[]
+}
 
-  cartItems   CartItem[]
 
-  @@unique([productId, ramGb, storageGb, processor, color])
+model ProductOptionValue {
+  id       Int           @id @default(autoincrement())
+  label    String
+  value    String
+  price    Int
+
+  optionId Int
+  option   ProductOption @relation(fields: [optionId], references: [id])
+
+  cartItemOptions CartItemOption[]
 }
 
 
@@ -61,8 +64,19 @@ model CartItem {
   cartId    Int
   cart      Cart     @relation(fields: [cartId], references: [id])
 
-  variantId Int
-  variant   ProductVariant @relation(fields: [variantId], references: [id])
+  productId Int
+  product   Product  @relation(fields: [productId], references: [id])
 
-  @@unique([cartId, variantId])
+  options   CartItemOption[]
+}
+
+
+model CartItemOption {
+  id            Int                @id @default(autoincrement())
+
+  cartItemId    Int
+  cartItem      CartItem           @relation(fields: [cartItemId], references: [id])
+
+  optionValueId Int
+  optionValue   ProductOptionValue @relation(fields: [optionValueId], references: [id])
 }
