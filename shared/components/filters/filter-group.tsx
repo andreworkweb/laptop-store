@@ -1,12 +1,6 @@
 import { useState } from "react";
 
 
-interface Filter {
-  id: string;
-  title: string;
-  items: FilterItem[];
-  defaultValue: string;
-}
 
 interface FilterItem {
   label: string;
@@ -14,45 +8,25 @@ interface FilterItem {
   price: number;
 }
 
-export const filtersData: Filter[] = [
-  {
-    id: "ram",
-    title: "RAM",
-    defaultValue: "16",
-    items: [
-      { label: "8 GB", value: "8", price: -100 },
-      { label: "16 GB", value: "16", price: 0 },
-      { label: "32 GB", value: "32", price: 100 },
-      { label: "64 GB", value: "64", price: 250 },
-    ],
-  },
-  {
-    id: "ssd",
-    title: "SSD Storage",
-    defaultValue: "512",
-    items: [
-      { label: "256 GB", value: "256", price: -50 },
-      { label: "512 GB", value: "512", price: 0 },
-      { label: "1 TB", value: "1024", price: 100 },
-      { label: "2 TB", value: "2048", price: 250 },
-    ],
-  },
-  {
-    id: "processor",
-    title: "Processor",
-    defaultValue: "M2",
-    items: [
-      { label: "Galaxy M1", value: "M1", price: -101 },
-      { label: "Galaxy M2", value: "M2", price: 0 },
-      { label: "Galaxy M3", value: "M3", price: 260 },
-      { label: "Galaxy M4", value: "M4", price: 500 },
-    ],
-  },
-];
+export interface Product {
+  name: string;
+  basePrice: number;
+  options: {
+    id: number;
+    name: string;
+    values: FilterItem[];
+  }[];
+}
 
-export const FilterGroup = () => {
-  const LAPTOP_PRICE = 1100;
+interface Props {
+  product: {
+    name: string;
+    basePrice: number;
+    options: Product["options"];
+  };
+}
 
+export const FilterGroup = ({ product }: Props) => {
   const [selectedValue, setSelectedValue] = useState<Record<string, number>>(
     {},
   );
@@ -69,19 +43,19 @@ export const FilterGroup = () => {
   }, 0);
 
   const totalPrice = () => {
-    return LAPTOP_PRICE + priceAccum;
+    return product.basePrice + priceAccum;
   };
 
   return (
     <div className="flex flex-col gap-6">
-      {filtersData.map((filter) => (
-        <div key={filter.id} className="flex flex-col gap-3 mt-3.5">
+      {product.options.map((option) => (
+        <div key={option.id} className="flex flex-col gap-3 mt-3.5">
           <div className="flex items-center font-bold gap-2">
-            <p className="bold text-xl">{filter.title}.</p>
+            <p className="bold text-xl">{option.name}.</p>
           </div>
 
           <div className="flex justify-center flex-wrap gap-2">
-            {filter.items.map((item) => (
+            {option.values.map((item) => (
               <label
                 key={item.value}
                 className="
@@ -98,11 +72,11 @@ export const FilterGroup = () => {
               >
                 <input
                   type="radio"
-                  name={filter.id}
+                  name={option.name}
                   value={item.value}
                   className="sr-only"
-                  onChange={() => handleSet(filter.id, item.price)}
-                  defaultChecked={item.value === filter.defaultValue}
+                  onChange={() => handleSet(option.name, item.price)}
+                  defaultChecked={item.price === 0}
                 />
 
                 <span className="flex flex-col items-center gap-0.5">

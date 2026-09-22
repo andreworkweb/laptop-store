@@ -1,15 +1,20 @@
 "use client";
 
 import { ColorFilter } from "./color-filter";
-import { FilterGroup } from "./filter-group";
 import { LaptopColor } from "../../hero";
+import { FilterGroup, Product } from "./filter-group";
 
 interface Props {
+  product: Product;
   selectedColor: LaptopColor;
   onColorChange: (color: LaptopColor) => void;
 }
 
-export const Filters = ({ selectedColor, onColorChange }: Props) => {
+export const Filters = ({
+  product,
+  selectedColor,
+  onColorChange,
+}: Props) => {
   return (
     <section className="">
       <div className="grid pt-7 mb-7 ">
@@ -20,7 +25,7 @@ export const Filters = ({ selectedColor, onColorChange }: Props) => {
           Find the perfect specs for your needs.
         </p>
       </div>
-      <FilterGroup />
+      <FilterGroup product={product} />
       <ColorFilter
         selectedColor={selectedColor}
         onColorChange={onColorChange}

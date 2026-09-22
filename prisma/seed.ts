@@ -15,7 +15,7 @@ async function main() {
     data: {
       name: "GalaxyBook Pro",
       slug: "galaxybook-pro",
-      basePrice: 1200,
+      basePrice: 1100,
       imageUrl: "/images/laptop-black.png",
 
       options: {

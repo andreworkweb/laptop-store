@@ -8,6 +8,7 @@ export type LaptopColor = "silver" | "black" | "blue" | "gold";
 
 interface Props {
   selectedColor: LaptopColor;
+  productName: string;
 }
 
 const laptops = {
@@ -20,7 +21,7 @@ const laptops = {
   gold: { name: "Gold laptop", img: "/images/laptops/4-gold-laptop.png" },
 } satisfies Record<LaptopColor, { name: string; img: string }>;
 
-export const Hero = ({ selectedColor }: Props) => {
+export const Hero = ({ selectedColor, productName }: Props) => {
   const [currentColor, setCurrentColor] = useState(selectedColor);
   const [nextColor, setNextColor] = useState<LaptopColor | null>(null);
   const currentImageRef = useRef<HTMLImageElement>(null);
@@ -67,7 +68,7 @@ export const Hero = ({ selectedColor }: Props) => {
   return (
     <section className="relative h-[750px] w-[750px] overflow-hidden">
       <h1 className="flex pl-7 justify-start relative z-10 font-semibold text-5xl nameFONT">
-        Vette Galaxy
+        {productName}
       </h1>
       <div className="pointer-events-none absolute inset-0 z-0">
         <Image

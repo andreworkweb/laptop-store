@@ -5,14 +5,20 @@ import { useState } from "react";
 import { Filters } from "./filters";
 import { Hero, LaptopColor } from "../../hero";
 
+import { Product } from "./filter-group";
 
-export const LaptopConfigurator = () => {
+interface Props {
+  product: Product;
+}
+
+export const LaptopConfigurator = ({ product }: Props) => {
   const [selectedColor, setSelectedColor] = useState<LaptopColor>("silver");
 
   return (
     <>
-      <Hero selectedColor={selectedColor} />
+      <Hero selectedColor={selectedColor} productName={product.name} />
       <Filters
+        product={product}
         selectedColor={selectedColor}
         onColorChange={setSelectedColor}
       />

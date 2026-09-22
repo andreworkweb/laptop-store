@@ -14,7 +14,7 @@ export default async function Home() {
     <section className="w-full max-w-7xl mx-auto mt-7">
       <Header />
       <div className="mt-14 flex items-center justify-between">
-        <LaptopConfigurator />
+        <LaptopConfigurator product={product} />
       </div>
     </section>
   );
