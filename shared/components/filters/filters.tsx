@@ -1,17 +1,20 @@
 "use client";
 
-import { ColorFilter } from "./color-filter";
-import { LaptopColor } from "../../hero";
 import { FilterGroup, Product } from "./filter-group";
+import { ColorFilter } from "./color-filter";
+import type { ColorOption } from "./laptop-configurator";
+import type { LaptopColor } from "../../hero";
 
 interface Props {
   product: Product;
+  colorOptions: ColorOption[];
   selectedColor: LaptopColor;
   onColorChange: (color: LaptopColor) => void;
 }
 
 export const Filters = ({
   product,
+  colorOptions,
   selectedColor,
   onColorChange,
 }: Props) => {
@@ -27,6 +30,7 @@ export const Filters = ({
       </div>
       <FilterGroup product={product} />
       <ColorFilter
+        colorOptions={colorOptions}
         selectedColor={selectedColor}
         onColorChange={onColorChange}
       />

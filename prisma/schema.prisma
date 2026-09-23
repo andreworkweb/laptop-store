@@ -6,45 +6,59 @@ datasource db {
   provider = "postgresql"
 }
 
-
 model Product {
-  id        Int      @id @default(autoincrement())
-  name      String
-  slug      String   @unique
-  basePrice Int
-  imageUrl  String
-
-  options   ProductOption[]
-  cartItems CartItem[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          Int             @id @default(autoincrement())
+  name        String
+  slug        String          @unique
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
+  basePrice   Int
+  cartItems   CartItem[]
+  options     ProductOption[]
+  colorOption ColorOption[]
 }
 
-
 model ProductOption {
-  id        Int           @id @default(autoincrement())
+  id        Int                  @id @default(autoincrement())
   name      String
   type      String
   productId Int
-  product   Product       @relation(fields: [productId], references: [id])
-
+  product   Product              @relation(fields: [productId], references: [id])
   values    ProductOptionValue[]
 }
 
-
 model ProductOptionValue {
-  id       Int           @id @default(autoincrement())
-  label    String
-  value    String
-  price    Int
-
-  optionId Int
-  option   ProductOption @relation(fields: [optionId], references: [id])
-
+  id              Int              @id @default(autoincrement())
+  label           String
+  value           String
+  price           Int
+  optionId        Int
+  color           String?
   cartItemOptions CartItemOption[]
+  option          ProductOption    @relation(fields: [optionId], references: [id])
 }
 
+model ColorOption {
+  id   Int    @id @default(autoincrement())
+  name String
+  type String
+
+  productId Int
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  values ColorOptionValue[]
+}
+
+model ColorOptionValue {
+  id    Int    @id @default(autoincrement())
+  label String
+  value String
+  price Int
+  color String
+
+  optionId Int
+  option   ColorOption @relation(fields: [optionId], references: [id], onDelete: Cascade)
+}
 
 model Cart {
   id          Int        @id @default(autoincrement())
@@ -52,31 +66,23 @@ model Cart {
   totalAmount Int        @default(0)
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
-
   items       CartItem[]
 }
 
-
 model CartItem {
-  id        Int      @id @default(autoincrement())
-  quantity  Int      @default(1)
-
+  id        Int              @id @default(autoincrement())
+  quantity  Int              @default(1)
   cartId    Int
-  cart      Cart     @relation(fields: [cartId], references: [id])
-
   productId Int
-  product   Product  @relation(fields: [productId], references: [id])
-
+  cart      Cart             @relation(fields: [cartId], references: [id])
+  product   Product          @relation(fields: [productId], references: [id])
   options   CartItemOption[]
 }
 
-
 model CartItemOption {
   id            Int                @id @default(autoincrement())
-
   cartItemId    Int
-  cartItem      CartItem           @relation(fields: [cartItemId], references: [id])
-
   optionValueId Int
+  cartItem      CartItem           @relation(fields: [cartItemId], references: [id])
   optionValue   ProductOptionValue @relation(fields: [optionValueId], references: [id])
 }

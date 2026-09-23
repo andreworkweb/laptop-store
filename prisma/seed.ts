@@ -11,19 +11,54 @@ const prisma = new PrismaClient({
 });
 
 async function main() {
+  const slug = "galaxybook-pro";
+
+  await prisma.cartItemOption.deleteMany({
+    where: {
+      optionValue: {
+        option: {
+          product: {
+            slug,
+          },
+        },
+      },
+    },
+  });
+
+  await prisma.productOptionValue.deleteMany({
+    where: {
+      option: {
+        product: {
+          slug,
+        },
+      },
+    },
+  });
+
+  await prisma.productOption.deleteMany({
+    where: {
+      product: {
+        slug,
+      },
+    },
+  });
+
+  await prisma.product.deleteMany({
+    where: {
+      slug,
+    },
+  });
+
   const product = await prisma.product.create({
     data: {
       name: "GalaxyBook Pro",
-      slug: "galaxybook-pro",
+      slug,
       basePrice: 1100,
-      imageUrl: "/images/laptop-black.png",
-
       options: {
         create: [
           {
             name: "RAM",
             type: "ram",
-
             values: {
               create: [
                 { label: "8 GB", value: "8", price: -100 },
@@ -37,7 +72,6 @@ async function main() {
           {
             name: "SSD Storage",
             type: "ssd",
-
             values: {
               create: [
                 { label: "256 GB", value: "256", price: -50 },
@@ -51,7 +85,6 @@ async function main() {
           {
             name: "Processor",
             type: "processor",
-
             values: {
               create: [
                 { label: "Galaxy M1", value: "M1", price: -101 },
@@ -63,6 +96,23 @@ async function main() {
           },
         ],
       },
+
+      colorOption: {
+        create: [
+          {
+            name: "Color",
+            type: "color",
+            values: {
+              create: [
+                { label: "Black", value: "black", price: 0, color: "#111827" },
+                { label: "Silver", value: "silver", price: 0, color: "#CBD5E1" },
+                { label: "Blue", value: "blue", price: 0, color: "#3B82F6" },
+                { label: "Gold", value: "gold", price: 0, color: "#E8C39E" },
+              ],
+            },
+          }
+        ]
+      }
     },
   });
 

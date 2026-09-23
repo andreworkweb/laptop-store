@@ -6,6 +6,7 @@ interface FilterItem {
   label: string;
   value: string;
   price: number;
+  color?: string | null;
 }
 
 export interface Product {
@@ -14,6 +15,7 @@ export interface Product {
   options: {
     id: number;
     name: string;
+    type: string;
     values: FilterItem[];
   }[];
 }
