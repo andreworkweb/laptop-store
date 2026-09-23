@@ -1,7 +1,3 @@
-import { useState } from "react";
-
-
-
 interface FilterItem {
   label: string;
   value: string;
@@ -21,6 +17,7 @@ export interface Product {
 }
 
 interface Props {
+  onOptionChange: (filterId: string, price: number) => void;
   product: {
     name: string;
     basePrice: number;
@@ -28,26 +25,7 @@ interface Props {
   };
 }
 
-export const FilterGroup = ({ product }: Props) => {
-  const [selectedValue, setSelectedValue] = useState<Record<string, number>>(
-    {},
-  );
-
-  const handleSet = (filterId: string, price: number) => {
-    setSelectedValue((prev) => ({
-      ...prev,
-      [filterId]: price,
-    }));
-  };
-
-  const priceAccum = Object.values(selectedValue).reduce((sum, price) => {
-    return sum + price;
-  }, 0);
-
-  const totalPrice = () => {
-    return product.basePrice + priceAccum;
-  };
-
+export const FilterGroup = ({ product, onOptionChange }: Props) => {
   return (
     <div className="flex flex-col gap-6">
       {product.options.map((option) => (
@@ -77,7 +55,7 @@ export const FilterGroup = ({ product }: Props) => {
                   name={option.name}
                   value={item.value}
                   className="sr-only"
-                  onChange={() => handleSet(option.name, item.price)}
+                  onChange={() => onOptionChange(option.name, item.price)}
                   defaultChecked={item.price === 0}
                 />
 
@@ -92,11 +70,6 @@ export const FilterGroup = ({ product }: Props) => {
           </div>
         </div>
       ))}
-      <div className="mt-5 flex items-center justify-between text-[#100E09]">
-        <p className="text-xl font-semibold">Total price:</p>
-
-        <p className="text-3xl font-bold tracking-tight">${totalPrice()}</p>
-      </div>
     </div>
   );
 };
