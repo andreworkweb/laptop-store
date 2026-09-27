@@ -1,5 +1,7 @@
-import { Search, ShoppingCart, User } from "lucide-react";
+import { Search, User } from "lucide-react";
 import Image from "next/image";
+import { CartButton } from "../cart/cart-button";
+import { SetStateAction } from "react";
 
 interface Props {}
 
@@ -14,7 +16,7 @@ export const Header = ({}: Props) => {
       <div>
         <div className="flex gap-6">
           <Search />
-          <ShoppingCart />
+          <CartButton />
           <User />
         </div>
       </div>
