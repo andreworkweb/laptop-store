@@ -5,6 +5,7 @@ import { FilterGroup, Product } from "./filter-group";
 import { ColorFilter } from "./color-filter";
 import type { ColorOption } from "./laptop-configurator";
 import type { LaptopColor } from "../../hero";
+import { AddToCart } from "./add-to-cart";
 
 interface Props {
   product: Product;
@@ -59,9 +60,7 @@ export const Filters = ({
 
         <p className="text-3xl font-bold tracking-tight">${totalPrice()}</p>
       </div>
-      <button className="mt-5 mb-5 w-full rounded-xl bg-[#100E09] px-6 py-4 font-semibold text-white transition hover:bg-[#202020]">
-        ADD TO CART
-      </button>
+      <AddToCart productId={product.id} />
     </section>
   );
 };

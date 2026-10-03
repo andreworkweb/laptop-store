@@ -6,6 +6,7 @@ interface FilterItem {
 }
 
 export interface Product {
+  id: number;
   name: string;
   basePrice: number;
   options: {

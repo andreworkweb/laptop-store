@@ -4,6 +4,7 @@ import { X } from "lucide-react";
 import { CartButton } from "./cart-button";
 import { useRef, useEffect } from "react";
 import gsap from "gsap";
+import { useCart } from "@/shared/hooks/use-cart";
 
 interface CartDrawerProps {
   onClose: () => void;
@@ -84,6 +85,8 @@ export const CartDrawer = ({ onClose }: CartDrawerProps) => {
     };
   }, []);
 
+  const { cart } = useCart();
+  
   return (
     <>
       <div
@@ -102,7 +105,19 @@ export const CartDrawer = ({ onClose }: CartDrawerProps) => {
             <X />
           </button>
         </div>
+        
+        <div className="p-9">
+    {cart?.items.map((item) => (
+      <div key={item.id}>
+        <p>{item.product.name}</p>
+        <p>{item.product.basePrice}$</p>
+        <p>Quantity: {item.quantity}</p>
+      </div>
+    ))}
+  </div>
+
       </div>
     </>
   );
 };
+
