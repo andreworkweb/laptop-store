@@ -83,6 +83,6 @@ model CartItemOption {
   id            Int                @id @default(autoincrement())
   cartItemId    Int
   optionValueId Int
-  cartItem      CartItem           @relation(fields: [cartItemId], references: [id])
+  cartItem      CartItem           @relation(fields: [cartItemId], references: [id], onDelete:  Cascade)
   optionValue   ProductOptionValue @relation(fields: [optionValueId], references: [id])
 }

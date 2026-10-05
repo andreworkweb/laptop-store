@@ -30,3 +30,15 @@ export async function addToCart(productId: number, optionValueIds: number[] = []
 
   return res.json()
 }
+
+export async function deleteCartItem(itemId: number) {
+  const res = await fetch(`/api/cart?itemId=${itemId}`, {
+    method: "DELETE",
+  });
+
+  if (!res.ok) {
+    throw new Error("Delete item error");
+  }
+
+  return res.json()
+}

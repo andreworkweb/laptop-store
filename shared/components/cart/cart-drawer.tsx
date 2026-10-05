@@ -1,6 +1,6 @@
 "use client";
 
-import { X } from "lucide-react";
+import { Trash, X } from "lucide-react";
 import { CartButton } from "./cart-button";
 import { useRef, useEffect } from "react";
 import gsap from "gsap";
@@ -85,7 +85,7 @@ export const CartDrawer = ({ onClose }: CartDrawerProps) => {
     };
   }, []);
 
-  const { cart } = useCart();
+  const { cart, deleteCartItem } = useCart();
   
   return (
     <>
@@ -112,6 +112,7 @@ export const CartDrawer = ({ onClose }: CartDrawerProps) => {
         <p>{item.product.name}</p>
         <p>{item.product.basePrice}$</p>
         <p>Quantity: {item.quantity}</p>
+        <button className="" onClick={() => deleteCartItem(item.id)}><Trash /></button>
       </div>
     ))}
   </div>
@@ -120,4 +121,3 @@ export const CartDrawer = ({ onClose }: CartDrawerProps) => {
     </>
   );
 };
-

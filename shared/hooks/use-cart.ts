@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
-import { getCart, addToCart as addCartItem } from "../services/cart";
+import {
+  getCart,
+  addToCart as addCartItem,
+  deleteCartItem as deleteItem,
+} from "../services/cart";
 
 type Cart = {
   items: {
@@ -25,9 +29,15 @@ export function useCart() {
     setCart(updatedCart);
   }
 
+  async function deleteCartItem(itemId: number) {
+    const updatedCart = await deleteItem(itemId);
+    setCart(updatedCart);
+  }
+
   return {
     cart,
     setCart,
     addToCart,
+    deleteCartItem,
   };
 }
