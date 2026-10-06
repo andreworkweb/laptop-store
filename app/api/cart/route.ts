@@ -73,7 +73,10 @@ export async function DELETE(req: NextRequest) {
   const itemId = Number(req.nextUrl.searchParams.get("itemId"));
 
   if (!Number.isInteger(itemId) || itemId <= 0) {
-    return NextResponse.json({ error: "Invalid cart item id" }, { status: 400 });
+    return NextResponse.json(
+      { error: "Invalid cart item id" },
+      { status: 400 },
+    );
   }
 
   const item = await prisma.cartItem.findUnique({
@@ -87,6 +90,54 @@ export async function DELETE(req: NextRequest) {
 
   await prisma.cartItem.delete({
     where: { id: itemId },
+  });
+
+  const updatedCart = await prisma.cart.findUnique({
+    where: { id: item.cartId },
+    include: {
+      items: {
+        include: {
+          product: true,
+          options: {
+            include: {
+              optionValue: true,
+            },
+          },
+        },
+      },
+    },
+  });
+
+  return NextResponse.json(updatedCart);
+}
+
+export async function PATCH(req: NextRequest) {
+  const { itemId, quantity } = await req.json();
+
+  if (
+    !Number.isInteger(itemId) ||
+    itemId <= 0 ||
+    !Number.isInteger(quantity) ||
+    quantity <= 0
+  ) {
+    return NextResponse.json(
+      { error: "Invalid cart item id or quantity" },
+      { status: 400 },
+    );
+  }
+
+  const item = await prisma.cartItem.findUnique({
+    where: { id: itemId },
+    select: { cartId: true },
+  });
+
+  if (!item) {
+    return NextResponse.json({ error: "Cart item not found" }, { status: 404 });
+  }
+
+  await prisma.cartItem.update({
+    where: { id: itemId },
+    data: { quantity },
   });
 
   const updatedCart = await prisma.cart.findUnique({

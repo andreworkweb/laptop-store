@@ -3,6 +3,7 @@ import {
   getCart,
   addToCart as addCartItem,
   deleteCartItem as deleteItem,
+  updateCartItemQuantity
 } from "../services/cart";
 
 type Cart = {
@@ -39,10 +40,16 @@ export function useCart() {
     setCart(updatedCart);
   }
 
+  async function changeQuantity(itemId: number, quantity: number) {
+  const updatedCart = await updateCartItemQuantity(itemId, quantity);
+  setCart(updatedCart);
+}
+
   return {
     cart,
     setCart,
     addToCart,
     deleteCartItem,
+    changeQuantity
   };
 }

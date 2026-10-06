@@ -85,7 +85,7 @@ export const CartDrawer = ({ onClose }: CartDrawerProps) => {
     };
   }, []);
 
-  const { cart, deleteCartItem } = useCart();
+  const { cart, deleteCartItem, changeQuantity } = useCart();
 
   return (
     <>
@@ -119,7 +119,25 @@ export const CartDrawer = ({ onClose }: CartDrawerProps) => {
               <div key={item.id}>
                 <p>{item.product.name}</p>
                 <p>{itemTotal}$</p>
-                <p>Quantity: {item.quantity}</p>
+                <div className="flex items-center gap-3">
+                  <button
+                    type="button"
+                    disabled={item.quantity <= 1}
+                    onClick={() => changeQuantity(item.id, item.quantity - 1)}
+                    className="disabled:opacity-40"
+                  >
+                    -
+                  </button>
+
+                  <p>Quantity: {item.quantity}</p>
+
+                  <button
+                    type="button"
+                    onClick={() => changeQuantity(item.id, item.quantity + 1)}
+                  >
+                    +
+                  </button>
+                </div>
 
                 <button onClick={() => deleteCartItem(item.id)}>
                   <Trash />
