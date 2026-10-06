@@ -5,9 +5,10 @@ import { useCart } from "@/shared/hooks/use-cart";
 
 type Props = {
   productId: number;
+  optionValueIds: number[];
 };
 
-export const AddToCart = ({ productId }: Props) => {
+export const AddToCart = ({ productId, optionValueIds }: Props) => {
   const { addToCart } = useCart();
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
@@ -17,7 +18,7 @@ export const AddToCart = ({ productId }: Props) => {
     setMessage("");
 
     try {
-      await addToCart(productId);
+      await addToCart(productId, optionValueIds);
       setMessage("Product added to cart");
     } catch {
       setMessage("Failed to add product");
@@ -36,7 +37,7 @@ export const AddToCart = ({ productId }: Props) => {
       >
         {loading ? "ADDING..." : "ADD TO CART"}
       </button>
-      <p>{message}</p>
+      <p className="flex justify-center items-center">{message}</p>
     </div>
   );
 };

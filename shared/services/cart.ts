@@ -1,7 +1,3 @@
-
-
-
-
 export async function getCart() {
   const res = await fetch("/api/cart");
 
@@ -12,7 +8,7 @@ export async function getCart() {
   return res.json();
 }
 
-export async function addToCart(productId: number, optionValueIds: number[] = [],) {
+export async function addToCart(productId: number, optionValueIds: number[]) {
   const res = await fetch("/api/cart", {
     method: "POST",
     headers: {
@@ -28,7 +24,7 @@ export async function addToCart(productId: number, optionValueIds: number[] = []
     throw new Error("Add item error");
   }
 
-  return res.json()
+  return res.json();
 }
 
 export async function deleteCartItem(itemId: number) {
@@ -40,5 +36,5 @@ export async function deleteCartItem(itemId: number) {
     throw new Error("Delete item error");
   }
 
-  return res.json()
+  return res.json();
 }

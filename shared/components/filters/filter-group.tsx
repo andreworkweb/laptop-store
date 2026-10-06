@@ -1,4 +1,5 @@
 interface FilterItem {
+  id: number;
   label: string;
   value: string;
   price: number;
@@ -18,7 +19,7 @@ export interface Product {
 }
 
 interface Props {
-  onOptionChange: (filterId: string, price: number) => void;
+  onOptionChange: (filterId: string, price: number, valueId: number) => void;
   product: {
     name: string;
     basePrice: number;
@@ -56,7 +57,9 @@ export const FilterGroup = ({ product, onOptionChange }: Props) => {
                   name={option.name}
                   value={item.value}
                   className="sr-only"
-                  onChange={() => onOptionChange(option.name, item.price)}
+                  onChange={() =>
+                    onOptionChange(option.name, item.price, item.id)
+                  }
                   defaultChecked={item.price === 0}
                 />
 

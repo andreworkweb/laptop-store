@@ -14,6 +14,11 @@ type Cart = {
       basePrice: number;
       imageUrl: string;
     };
+    options: {
+      optionValue: {
+        price: number;
+      };
+    }[];
   }[];
 };
 
@@ -24,8 +29,8 @@ export function useCart() {
     getCart().then(setCart);
   }, []);
 
-  async function addToCart(productId: number) {
-    const updatedCart = await addCartItem(productId, []);
+  async function addToCart(productId: number, optionValueIds: number[]) {
+    const updatedCart = await addCartItem(productId, optionValueIds);
     setCart(updatedCart);
   }
 

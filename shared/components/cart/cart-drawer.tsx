@@ -86,7 +86,7 @@ export const CartDrawer = ({ onClose }: CartDrawerProps) => {
   }, []);
 
   const { cart, deleteCartItem } = useCart();
-  
+
   return (
     <>
       <div
@@ -105,18 +105,29 @@ export const CartDrawer = ({ onClose }: CartDrawerProps) => {
             <X />
           </button>
         </div>
-        
-        <div className="p-9">
-    {cart?.items.map((item) => (
-      <div key={item.id}>
-        <p>{item.product.name}</p>
-        <p>{item.product.basePrice}$</p>
-        <p>Quantity: {item.quantity}</p>
-        <button className="" onClick={() => deleteCartItem(item.id)}><Trash /></button>
-      </div>
-    ))}
-  </div>
 
+        <div className="p-9">
+          {cart?.items.map((item) => {
+            const optionsPrice = item.options.reduce((sum, option) => {
+              return sum + option.optionValue.price;
+            }, 0);
+
+            const itemTotal =
+              (item.product.basePrice + optionsPrice) * item.quantity;
+
+            return (
+              <div key={item.id}>
+                <p>{item.product.name}</p>
+                <p>{itemTotal}$</p>
+                <p>Quantity: {item.quantity}</p>
+
+                <button onClick={() => deleteCartItem(item.id)}>
+                  <Trash />
+                </button>
+              </div>
+            );
+          })}
+        </div>
       </div>
     </>
   );

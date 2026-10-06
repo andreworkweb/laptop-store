@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { FilterGroup, Product } from "./filter-group";
+import { FilterGroup } from "./filter-group";
+import type { Product } from "./filter-group";
 import { ColorFilter } from "./color-filter";
 import type { ColorOption } from "./laptop-configurator";
 import type { LaptopColor } from "../../hero";
@@ -14,34 +15,59 @@ interface Props {
   onColorChange: (color: LaptopColor) => void;
 }
 
+type SelectedOption = {
+  id: number;
+  price: number;
+};
+
 export const Filters = ({
   product,
   colorOptions,
   selectedColor,
   onColorChange,
 }: Props) => {
-  const [selectedValue, setSelectedValue] = useState<Record<string, number>>(
-    {},
-  );
+  const [selectedValue, setSelectedValue] = useState<
+    Record<string, SelectedOption>
+  >(() => {
+    const values: Record<string, SelectedOption> = {};
 
-  const handleSet = (filterId: string, price: number) => {
+    for (const option of product.options) {
+      const value = option.values.find((value) => value.price === 0);
+
+      if (value) {
+        values[option.name] = {
+          id: value.id,
+          price: value.price,
+        };
+      }
+    }
+
+    return values;
+  });
+
+  const handleSet = (filterId: string, price: number, valueId: number) => {
     setSelectedValue((prev) => ({
       ...prev,
-      [filterId]: price,
+      [filterId]: {
+        id: valueId,
+        price,
+      },
     }));
   };
 
-  const priceAccum = Object.values(selectedValue).reduce((sum, price) => {
-    return sum + price;
+  const selectedOptions = Object.values(selectedValue);
+
+  const priceAccum = selectedOptions.reduce((sum, option) => {
+    return sum + option.price;
   }, 0);
 
-  const totalPrice = () => {
-    return product.basePrice + priceAccum;
-  };
+  const totalPrice = product.basePrice + priceAccum;
+
+  const optionValueIds = selectedOptions.map((option) => option.id);
 
   return (
     <section className="">
-      <div className="grid pt-7 mb-7 ">
+      <div className="grid pt-7 mb-7">
         <p className="font-(family-name:--font-poppins) text-3xl font-bold text-[#1F2937]">
           Customize Your Laptop
         </p>
@@ -49,18 +75,21 @@ export const Filters = ({
           Find the perfect specs for your needs.
         </p>
       </div>
+
       <FilterGroup product={product} onOptionChange={handleSet} />
+
       <ColorFilter
         colorOptions={colorOptions}
         selectedColor={selectedColor}
         onColorChange={onColorChange}
       />
+
       <div className="mt-5 flex items-center justify-between text-[#100E09]">
         <p className="text-xl font-semibold">Total price:</p>
-
-        <p className="text-3xl font-bold tracking-tight">${totalPrice()}</p>
+        <p className="text-3xl font-bold tracking-tight">${totalPrice}</p>
       </div>
-      <AddToCart productId={product.id} />
+
+      <AddToCart productId={product.id} optionValueIds={optionValueIds} />
     </section>
   );
 };
