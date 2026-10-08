@@ -5,6 +5,7 @@ import { CartButton } from "./cart-button";
 import { useRef, useEffect } from "react";
 import gsap from "gsap";
 import { useCart } from "@/shared/hooks/use-cart";
+import Image from "next/image";
 
 interface CartDrawerProps {
   onClose: () => void;
@@ -87,6 +88,13 @@ export const CartDrawer = ({ onClose }: CartDrawerProps) => {
 
   const { cart, deleteCartItem, changeQuantity } = useCart();
 
+  const laptop = {
+    silver: {
+      name: "Silver laptop",
+      img: "/images/laptops/v1-silver-laptop.png",
+    },
+  };
+
   return (
     <>
       <div
@@ -118,6 +126,19 @@ export const CartDrawer = ({ onClose }: CartDrawerProps) => {
             return (
               <div key={item.id}>
                 <p>{item.product.name}</p>
+                <Image
+                  src={laptop.silver.img}
+                  alt={laptop.silver.name}
+                  width={750}
+                  height={750}
+                />
+                <div>
+                  {item.options.map((option) => (
+                    <p key={option.id}>
+                      {option.optionValue.option.name}: {option.optionValue.label}
+                    </p>
+                  ))}
+                </div>
                 <p>{itemTotal}$</p>
                 <div className="flex items-center gap-3">
                   <button

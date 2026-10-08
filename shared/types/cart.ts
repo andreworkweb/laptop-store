@@ -1,3 +1,6 @@
+import { ReactNode } from "react";
+
+
 export type Cart = {
   items: {
     id: number;
@@ -8,8 +11,13 @@ export type Cart = {
       imageUrl: string;
     };
     options: {
+      id: number;
       optionValue: {
         price: number;
+        label: string;
+        option: {
+          name: string;
+        };
       };
     }[];
   }[];

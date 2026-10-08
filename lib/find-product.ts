@@ -7,6 +7,7 @@ export const findProduct = async () => {
         include: {
           values: true,
         },
+        
       },
     },
   });

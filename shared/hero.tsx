@@ -1,7 +1,9 @@
 "use client";
 
 import gsap from "gsap";
+import { ArrowLeft } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 
 export type LaptopColor = "silver" | "black" | "blue" | "gold";
@@ -9,6 +11,11 @@ export type LaptopColor = "silver" | "black" | "blue" | "gold";
 interface Props {
   selectedColor: LaptopColor;
   productName: string;
+  colors: {
+    value: string;
+    label: string;
+    imageUrl: string;
+  }[];
 }
 
 const laptops = {
@@ -21,7 +28,7 @@ const laptops = {
   gold: { name: "Gold laptop", img: "/images/laptops/4-gold-laptop.png" },
 } satisfies Record<LaptopColor, { name: string; img: string }>;
 
-export const Hero = ({ selectedColor, productName }: Props) => {
+export const Hero = ({ selectedColor, productName, colors }: Props) => {
   const [currentColor, setCurrentColor] = useState(selectedColor);
   const [nextColor, setNextColor] = useState<LaptopColor | null>(null);
   const currentImageRef = useRef<HTMLImageElement>(null);
@@ -66,10 +73,15 @@ export const Hero = ({ selectedColor, productName }: Props) => {
   const nextLaptop = nextColor ? laptops[nextColor] : null;
 
   return (
-    <section className="relative h-[750px] w-[750px] overflow-hidden">
-      <h1 className="flex pl-7 justify-start relative z-10 font-semibold text-5xl nameFONT">
-        {productName}
-      </h1>
+    <section className="relative h-187.5 w-187.5 overflow-hidden">
+      <div className="flex items-center">
+        <Link href="">
+          <ArrowLeft />
+        </Link >
+        <h1 className="flex pl-7 justify-start relative z-10 text-3xl nameFONT">
+          {productName}
+        </h1>
+      </div>
       <div className="pointer-events-none absolute inset-0 z-0">
         <Image
           ref={currentImageRef}

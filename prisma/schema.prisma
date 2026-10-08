@@ -14,8 +14,8 @@ model Product {
   updatedAt   DateTime        @updatedAt
   basePrice   Int
   cartItems   CartItem[]
-  options     ProductOption[]
   colorOption ColorOption[]
+  options     ProductOption[]
 }
 
 model ProductOption {
@@ -39,24 +39,22 @@ model ProductOptionValue {
 }
 
 model ColorOption {
-  id   Int    @id @default(autoincrement())
-  name String
-  type String
-
+  id        Int                @id @default(autoincrement())
+  name      String
+  type      String
   productId Int
-  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
-
-  values ColorOptionValue[]
+  product   Product            @relation(fields: [productId], references: [id], onDelete: Cascade)
+  values    ColorOptionValue[]
 }
 
 model ColorOptionValue {
-  id    Int    @id @default(autoincrement())
-  label String
-  value String
-  price Int
-  color String
-
+  id       Int         @id @default(autoincrement())
+  label    String
+  value    String
+  price    Int
+  color    String
   optionId Int
+  imageUrl String      @default("")
   option   ColorOption @relation(fields: [optionId], references: [id], onDelete: Cascade)
 }
 
@@ -83,6 +81,6 @@ model CartItemOption {
   id            Int                @id @default(autoincrement())
   cartItemId    Int
   optionValueId Int
-  cartItem      CartItem           @relation(fields: [cartItemId], references: [id], onDelete:  Cascade)
+  cartItem      CartItem           @relation(fields: [cartItemId], references: [id], onDelete: Cascade)
   optionValue   ProductOptionValue @relation(fields: [optionValueId], references: [id])
 }

@@ -22,7 +22,11 @@ export const LaptopConfigurator = ({ product, colorOptions }: Props) => {
 
   return (
     <>
-      <Hero selectedColor={selectedColor} productName={product.name} />
+      <Hero
+        productName={product.name}
+        selectedColor={selectedColor}
+        colors={colorOptions.flatMap((option) => option.values)}
+      />
       <Filters
         product={product}
         colorOptions={colorOptions}

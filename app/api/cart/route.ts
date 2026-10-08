@@ -9,7 +9,11 @@ export async function GET() {
           product: true,
           options: {
             include: {
-              optionValue: true,
+              optionValue: {
+                include: {
+                  option: true,
+                },
+              },
             },
           },
         },
@@ -19,6 +23,7 @@ export async function GET() {
 
   return NextResponse.json(cart);
 }
+
 
 export async function POST(req: NextRequest) {
   const body = await req.json();
@@ -58,7 +63,11 @@ export async function POST(req: NextRequest) {
           product: true,
           options: {
             include: {
-              optionValue: true,
+              optionValue: {
+                include: {
+                  option: true,
+                },
+              },
             },
           },
         },
@@ -100,7 +109,11 @@ export async function DELETE(req: NextRequest) {
           product: true,
           options: {
             include: {
-              optionValue: true,
+              optionValue: {
+                include: {
+                  option: true,
+                },
+              },
             },
           },
         },
@@ -148,7 +161,11 @@ export async function PATCH(req: NextRequest) {
           product: true,
           options: {
             include: {
-              optionValue: true,
+              optionValue: {
+                include: {
+                  option: true,
+                },
+              },
             },
           },
         },
