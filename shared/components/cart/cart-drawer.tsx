@@ -95,6 +95,18 @@ export const CartDrawer = ({ onClose }: CartDrawerProps) => {
     },
   };
 
+  const total =
+    cart?.items.reduce((sum, item) => {
+      const optionsPrice = item.options.reduce(
+        (sum, option) => sum + option.optionValue.price,
+        0,
+      );
+
+      const itemTotal = (item.product.basePrice + optionsPrice) * item.quantity;
+
+      return sum + itemTotal;
+    }, 0) ?? 0;
+
   return (
     <>
       <div
@@ -105,7 +117,7 @@ export const CartDrawer = ({ onClose }: CartDrawerProps) => {
 
       <div
         ref={drawerRef}
-        className="fixed top-0 right-0 z-50 h-screen w-100 bg-white shadow-xl"
+        className="fixed top-0 right-0 z-50 h-screen w-100 bg-white shadow-xl flex flex-col"
       >
         <div className="flex justify-between items-center p-9">
           <p className="text-2xl font-semibold">Cart</p>
@@ -114,7 +126,7 @@ export const CartDrawer = ({ onClose }: CartDrawerProps) => {
           </button>
         </div>
 
-        <div className="p-9">
+        <div className="flex-1 min-h-0 overflow-y-auto p-9">
           {cart?.items.map((item) => {
             const optionsPrice = item.options.reduce((sum, option) => {
               return sum + option.optionValue.price;
@@ -135,7 +147,8 @@ export const CartDrawer = ({ onClose }: CartDrawerProps) => {
                 <div>
                   {item.options.map((option) => (
                     <p key={option.id}>
-                      {option.optionValue.option.name}: {option.optionValue.label}
+                      {option.optionValue.option.name}:{" "}
+                      {option.optionValue.label}
                     </p>
                   ))}
                 </div>
@@ -166,6 +179,13 @@ export const CartDrawer = ({ onClose }: CartDrawerProps) => {
               </div>
             );
           })}
+        </div>
+
+        <div className="shrink-0 p-5 shadow-xl">
+          <div className="flex justify-between">
+            <p>Total:</p>
+            <p>${total}</p>
+          </div>
         </div>
       </div>
     </>
