@@ -1,8 +1,15 @@
 import { prisma } from "@/lib/prisma";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET() {
-  const cart = await prisma.cart.findFirst({
+export async function GET(req: NextRequest) {
+  const token = req.cookies.get("cartToken")?.value;
+
+  if (!token) {
+    return NextResponse.json({ items: [], totalAmount: 0 });
+  }
+
+  const cart = await prisma.cart.findUnique({
+    where: { token },
     include: {
       items: {
         include: {
@@ -24,19 +31,19 @@ export async function GET() {
   return NextResponse.json(cart);
 }
 
-
 export async function POST(req: NextRequest) {
   const body = await req.json();
 
   const { productId, optionValueIds = [] } = body;
+  const token = req.cookies.get("cartToken")?.value;
 
-  let cart = await prisma.cart.findFirst();
+  let cart = token ? await prisma.cart.findUnique({ where: { token } }) : null;
 
   if (!cart) {
+    const newToken = crypto.randomUUID();
+
     cart = await prisma.cart.create({
-      data: {
-        token: crypto.randomUUID(),
-      },
+      data: { token: newToken },
     });
   }
 
@@ -75,7 +82,17 @@ export async function POST(req: NextRequest) {
     },
   });
 
-  return NextResponse.json(updatedCart);
+  const response = NextResponse.json(updatedCart);
+
+  response.cookies.set("cartToken", cart.token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "lax",
+    path: "/",
+    maxAge: 60 * 60 * 24 * 30,
+  });
+
+  return response;
 }
 
 export async function DELETE(req: NextRequest) {
