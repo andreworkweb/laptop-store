@@ -6,6 +6,7 @@ import { useRef, useEffect } from "react";
 import gsap from "gsap";
 import { useCart } from "@/shared/hooks/use-cart";
 import Image from "next/image";
+import { CheckoutButton } from "./checkout-button";
 
 interface CartDrawerProps {
   onClose: () => void;
@@ -108,114 +109,114 @@ export const CartDrawer = ({ onClose }: CartDrawerProps) => {
     }, 0) ?? 0;
 
   return (
-  <>
-    <div
-      className="fixed inset-0 z-40 bg-black/30 backdrop-blur-sm"
-      onClick={handleClose}
-      ref={overlayRef}
-    />
+    <>
+      <div
+        className="fixed inset-0 z-40 bg-black/30 backdrop-blur-sm"
+        onClick={handleClose}
+        ref={overlayRef}
+      />
 
-    <div
-      ref={drawerRef}
-      className="fixed top-0 right-0 z-50 flex h-screen w-110 max-w-full flex-col bg-white"
-    >
-      <div className="flex items-center justify-between px-8 pt-10 pb-6">
-        <p className="text-3xl font-semibold tracking-tight">Cart</p>
-        <button
-          className="transition-opacity hover:opacity-50"
-          onClick={handleClose}
-        >
-          <X />
-        </button>
-      </div>
+      <div
+        ref={drawerRef}
+        className="fixed top-0 right-0 z-50 flex h-screen w-110 max-w-full flex-col bg-white"
+      >
+        <div className="flex items-center justify-between px-8 pt-10 pb-6">
+          <p className="text-3xl font-semibold tracking-tight">Cart</p>
+          <button
+            className="transition-opacity hover:opacity-50"
+            onClick={handleClose}
+          >
+            <X />
+          </button>
+        </div>
 
-      <div className="min-h-0 flex-1 overflow-y-auto px-8 pt-12">
-        {cart?.items.map((item) => {
-          const optionsPrice = item.options.reduce((sum, option) => {
-            return sum + option.optionValue.price;
-          }, 0);
+        <div className="min-h-0 flex-1 overflow-y-auto px-8 pt-12">
+          {cart?.items.map((item) => {
+            const optionsPrice = item.options.reduce((sum, option) => {
+              return sum + option.optionValue.price;
+            }, 0);
 
-          const itemTotal =
-            (item.product.basePrice + optionsPrice) * item.quantity;
+            const itemTotal =
+              (item.product.basePrice + optionsPrice) * item.quantity;
 
-          return (
-            <div
-              key={item.id}
-              className="group flex items-start gap-4 pb-10"
-            >
-              <div className="w-26 shrink-0">
-                <Image
-                  src={laptop.silver.img}
-                  alt={laptop.silver.name}
-                  width={150}
-                  height={150}
-                  className="h-auto w-full object-contain"
-                />
-              </div>
+            return (
+              <div key={item.id} className="group flex items-start gap-4 pb-10">
+                <div className="w-26 shrink-0">
+                  <Image
+                    src={laptop.silver.img}
+                    alt={laptop.silver.name}
+                    width={150}
+                    height={150}
+                    className="h-auto w-full object-contain"
+                  />
+                </div>
 
-              <div className="min-w-0 flex-1">
-                <p className="mb-2 text-base font-semibold tracking-tight">
-                  {item.product.name}
-                </p>
-
-                {item.options.map((option) => (
-                  <p
-                    key={option.id}
-                    className="text-sm leading-6 text-black/60"
-                  >
-                    {option.optionValue.option.name}:{" "}
-                    {option.optionValue.label}
-                  </p>
-                ))}
-              </div>
-
-              <div className="flex shrink-0 flex-col items-end gap-4">
-                <button
-                  onClick={() => deleteCartItem(item.id)}
-                  className="opacity-40 transition-opacity hover:opacity-100"
-                >
-                  <Trash className="h-4 w-4" />
-                </button>
-
-                <p className="text-base font-semibold whitespace-nowrap">
-                  {itemTotal}$
-                </p>
-
-                <div className="flex items-center gap-3 text-sm">
-                  <button
-                    type="button"
-                    disabled={item.quantity <= 1}
-                    onClick={() => changeQuantity(item.id, item.quantity - 1)}
-                    className="px-1 py-2 text-lg font-light transition-opacity hover:opacity-50 disabled:opacity-20"
-                  >
-                    -
-                  </button>
-
-                  <p className="min-w-3 text-center font-medium">
-                    {item.quantity}
+                <div className="min-w-0 flex-1">
+                  <p className="mb-2 text-base font-semibold tracking-tight">
+                    {item.product.name}
                   </p>
 
+                  {item.options.map((option) => (
+                    <p
+                      key={option.id}
+                      className="text-xs leading-5 text-black/60"
+                    >
+                      {option.optionValue.option.name}:{" "}
+                      {option.optionValue.label}
+                    </p>
+                  ))}
+                </div>
+
+                <div className="flex shrink-0 flex-col items-end gap-4">
                   <button
-                    type="button"
-                    onClick={() => changeQuantity(item.id, item.quantity + 1)}
-                    className="px-1 py-2 text-lg font-light transition-opacity hover:opacity-50"
+                    onClick={() => deleteCartItem(item.id)}
+                    className="opacity-40 transition-opacity hover:opacity-100"
                   >
-                    +
+                    <Trash className="h-4 w-4" />
                   </button>
+
+                  <p className="text-base font-semibold whitespace-nowrap">
+                    {itemTotal}$
+                  </p>
+
+                  <div className="flex items-center gap-3 text-sm">
+                    <button
+                      type="button"
+                      disabled={item.quantity <= 1}
+                      onClick={() => changeQuantity(item.id, item.quantity - 1)}
+                      className="flex size-7 cursor-pointer items-center justify-center rounded-lg bg-black text-lg font-light text-white transition-all hover:bg-black/80 active:scale-95 disabled:cursor-not-allowed"
+                    >
+                      -
+                    </button>
+
+                    <p className="min-w-4 text-center font-medium">
+                      {item.quantity}
+                    </p>
+
+                    <button
+                      type="button"
+                      onClick={() => changeQuantity(item.id, item.quantity + 1)}
+                      className="flex size-7 cursor-pointer items-center justify-center rounded-lg bg-black text-lg font-light text-white transition-all hover:bg-black/80 active:scale-95"
+                    >
+                      +
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
-          );
-        })}
-      </div>
+            );
+          })}
+        </div>
 
-      <div className="shrink-0 px-8 pt-6 pb-10">
-        <div className="flex items-center justify-between">
-          <p className="text-base font-medium">Total</p>
-          <p className="text-2xl font-semibold tracking-tight">${total}</p>
+        <div className="shrink-0 bg-white px-8 pt-8 pb-10">
+          <div className="mb-7 flex items-center justify-between">
+            <p className="text-base font-medium text-black/70">Total</p>
+
+            <p className="text-2xl font-semibold tracking-tight">${total}</p>
+          </div>
+
+          <CheckoutButton />
         </div>
       </div>
-    </div>
-  </>
-);
+    </>
+  );
 };
